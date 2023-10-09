@@ -63,6 +63,8 @@ def get_parser():
     )
     return parser
 
+def get_outputs(instances):
+    pass
 
 if __name__ == "__main__":
     mp.set_start_method("spawn", force=True)
@@ -80,11 +82,14 @@ if __name__ == "__main__":
         elif len(args.input) == 1:
             args.input = glob.glob(os.path.expanduser(args.input[0]))
             assert args.input, "The input path(s) was not found"
+        
+        frame_start = 1
         for path in tqdm.tqdm(args.input, disable=not args.output):
             # use PIL, to be consistent with evaluation
             img = read_image(path, format="BGR")
             start_time = time.time()
-            predictions, visualized_output = demo.run_on_image(img)
+            predictions, visualized_output, outputs = demo.run_on_image(img)
+            print(outputs)            
             logger.info(
                 "{}: detected {} instances in {:.2f}s".format(
                     path, len(predictions["instances"]), time.time() - start_time

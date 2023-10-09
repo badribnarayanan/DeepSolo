@@ -57,6 +57,27 @@ class TextVisualizer(Visualizer):
                 last_char = '###'
         return s
 
+    def _return_instance_fields(self, predictions):
+        #return text, score, rec, bd
+        outputs = []
+        ctrl_pnts = predictions.ctrl_points.numpy()
+        scores = predictions.scores.tolist()
+        recs = predictions.recs
+        bd_pts = np.asarray(predictions.bd)
+        
+        for ctrl_pnt, score, rec, bd in zip(ctrl_pnts, scores, recs, bd_pts):
+        
+            text = self._ctc_decode_recognition(rec)
+            if self.voc_size == 37:
+                text = text.upper()
+            
+            outputs.append({'text': text, 'score': score, 'rec': rec, 'bd': bd, 'ctrl_pnt': ctrl_pnt})
+        
+        return outputs
+        
+        
+        
+
     def overlay_instances(self, ctrl_pnts, scores, recs, bd_pnts, alpha=0.4):
         colors = [(0,0.5,0),(0,0.75,0),(1,0,1),(0.75,0,0.75),(0.5,0,0.5),(1,0,0),(0.75,0,0),(0.5,0,0),
         (0,0,1),(0,0,0.75),(0.75,0.25,0.25),(0.75,0.5,0.5),(0,0.75,0.75),(0,0.5,0.5),(0,0.3,0.75)]

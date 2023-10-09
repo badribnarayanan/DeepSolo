@@ -34,7 +34,7 @@ class VisualizationDemo(object):
             cfg.DATASETS.TEST[0] if len(cfg.DATASETS.TEST) else "__unused"
         )
         self.cfg = cfg
-        self.cpu_device = torch.device("cpu")
+        self.cpu_device = torch.device("cPU")
         self.instance_mode = instance_mode
         self.vis_text = cfg.MODEL.TRANSFORMER.ENABLED
 
@@ -80,9 +80,10 @@ class VisualizationDemo(object):
                     predictions["sem_seg"].argmax(dim=0).to(self.cpu_device))
             if "instances" in predictions:
                 instances = predictions["instances"].to(self.cpu_device)
+                instance_fields = visualizer._return_instance_fields(instances)
                 vis_output = visualizer.draw_instance_predictions(predictions=instances)
 
-        return predictions, vis_output
+        return predictions, vis_output, instance_fields
 
     def _frame_from_video(self, video):
         while video.isOpened():
