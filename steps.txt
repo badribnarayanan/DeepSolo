@@ -1,11 +1,11 @@
 steps to run demo:
 
 1. start docker - 
-    docker run --gpus all -it --shm-size=8gb --env="DISPLAY" --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" --name=deepsolo deepsolo:v0
+    docker run --gpus all -it --shm-size=8gb --env="DISPLAY" --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" --name=ocr_testing ocr_testing
 
 2. download model file and demo image
     gdown 1fMXM3OCxKU1XgOFr6RGwFOAjwgh84fPp         ----> model file
     gdown 1ydvL_nfgDTKLKPLEyuUfxUnjA0cmTM5s         ----> dummy image
 
 3. run demo.py 
-    python demo/demo.py --config-file configs/ViTAEv2_S/TotalText/finetune_150k_tt_mlt_13_15_textocr.yaml --input sf6_ocr_frame.png --output outputs/ --opts MODEL.WEIGHTS tt_vitaev2-s_finetune_synth-tt-mlt-13-15-textocr.pth
+    python demo/demo.py --config-file configs/ViTAEv2_S/TotalText/finetune_150k_tt_mlt_13_15_textocr.yaml --input 172_DENVER.jpg --output outputs/ --opts MODEL.WEIGHTS tt_vitaev2-s_finetune_synth-tt-mlt-13-15-textocr.pth

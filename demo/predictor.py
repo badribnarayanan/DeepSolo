@@ -34,7 +34,7 @@ class VisualizationDemo(object):
             cfg.DATASETS.TEST[0] if len(cfg.DATASETS.TEST) else "__unused"
         )
         self.cfg = cfg
-        self.cpu_device = torch.device("cPU")
+        self.cpu_device = torch.device("cuda")
         self.instance_mode = instance_mode
         self.vis_text = cfg.MODEL.TRANSFORMER.ENABLED
 
