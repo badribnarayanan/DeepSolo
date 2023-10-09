@@ -11,6 +11,8 @@ from detectron2.data.detection_utils import read_image
 from detectron2.utils.logger import setup_logger
 
 from predictor import VisualizationDemo
+from shapely.geometry import Point, Polygon
+
 from adet.config import get_cfg
 
 # constants
@@ -63,8 +65,22 @@ def get_parser():
     )
     return parser
 
-def get_outputs(instances):
-    pass
+#function to check if a centrepoint of a bounding box is inside a polygon
+def compare_polygon_bbox(centre_point, polygon_points):
+    """ 
+    Inputs:
+        centre_point: tuple of (x,y) coordinates of the centre point of the bounding box
+        polygon_points: list of tuples of (x,y) coordinates of the polygon
+    Output:
+        True if the centre point is inside the polygon, False otherwise
+    """
+    #create a polygon object
+    polygon = Polygon(polygon_points)
+    #create a point object
+    point = Point(centre_point)
+    #check if the point is inside the polygon
+    return polygon.contains(point)
+
 
 if __name__ == "__main__":
     mp.set_start_method("spawn", force=True)
@@ -89,12 +105,13 @@ if __name__ == "__main__":
             img = read_image(path, format="BGR")
             start_time = time.time()
             predictions, visualized_output, outputs = demo.run_on_image(img)
-            print(outputs)            
             logger.info(
                 "{}: detected {} instances in {:.2f}s".format(
                     path, len(predictions["instances"]), time.time() - start_time
                 )
             )
+            #1. load ground_truth json which contains the bounding boxes and get the centre point of bboxes
+            #2. check if 
 
             if args.output:
                 if os.path.isdir(args.output):

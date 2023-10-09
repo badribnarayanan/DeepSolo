@@ -60,6 +60,7 @@ class TextVisualizer(Visualizer):
     def _return_instance_fields(self, predictions):
         #return text, score, rec, bd
         outputs = []
+        #change device to cpu and convert to numpy
         ctrl_pnts = predictions.ctrl_points.numpy()
         scores = predictions.scores.tolist()
         recs = predictions.recs
