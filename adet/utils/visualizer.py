@@ -67,6 +67,9 @@ class TextVisualizer(Visualizer):
         bd_pts = np.asarray(predictions.bd)
         
         for ctrl_pnt, score, rec, bd in zip(ctrl_pnts, scores, recs, bd_pts):
+            if bd is not None:
+                bd = np.hsplit(bd, 2)
+                bd = np.vstack([bd[0], bd[1][::-1]])
         
             text = self._ctc_decode_recognition(rec)
             if self.voc_size == 37:
